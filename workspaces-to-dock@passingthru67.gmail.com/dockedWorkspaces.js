@@ -2374,7 +2374,17 @@ var DockedWorkspaces = class WorkspacesToDock_DockedWorkspaces {
 
         // Update position of main actor (used to detect window overlaps)
         this.actor.set_position(x, y);
-        this._struts.set_position(x, y);
+        var strut_offset = 0;
+        switch(this._position){
+            case St.Side.LEFT:
+                strut_offset = -1;
+                break;
+            case St.Side.RIGHT:
+                strut_offset = 1;
+                break;
+        }
+        this._struts.set_position(x+strut_offset, y);
+
         if (_DEBUG_) global.log("dockedWorkspaces: _updateSize new x = "+x+" y = "+y);
 
         // Update size of the main actor as well as the _dock & _panels inside
@@ -2489,7 +2499,6 @@ var DockedWorkspaces = class WorkspacesToDock_DockedWorkspaces {
         } else {
             this._struts.set_size(this.actor.width, this.actor.height);
         }
-
     }
 
     // 'Hard' reset dock positon: called on start and when monitor changes
